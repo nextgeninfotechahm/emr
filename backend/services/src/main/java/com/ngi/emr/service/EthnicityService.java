@@ -14,7 +14,8 @@ import java.util.Optional;
 public class EthnicityService {
     @Autowired
     private EthnicitiesRepo repo;
-    public void addEnthnicity(EthnicityContract ethnicityContract){
+    public void addEthnicity(EthnicityContract
+                                     ethnicityContract){
         Ethnicities e= new Ethnicities();
         e.setDescription(ethnicityContract.getDescription());
         e.setName(ethnicityContract.getName());
