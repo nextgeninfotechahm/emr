@@ -91,7 +91,7 @@ public class PatientService {
             List<PatientContract> patients = new ArrayList<>();
             for(Patients p:repo.findAll())
             {
-                patients.add(new PatientContract(p.getLastname(), p.getFirstname(), p.getMiddleInitial(), p.getStreet(),
+                patients.add(new PatientContract(p.getId(), p.getLastname(), p.getFirstname(), p.getMiddleInitial(), p.getStreet(),
                 p.getAddress2(), p.getCity(), p.getState(), p.getZipcode(), p.getDob(), p.getGenderId(), p.getEthnicityId(),
                         p.getRaceId(), p.getPrimaryPhone(), p.getSecondaryPhone(), p.getEmail(), p.getContactName(),
                         p.getContactPhone(), p.getContactEmail(), p.getContactAddress(), p.getSmsConsent(), p.getEmailConsent(),

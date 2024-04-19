@@ -36,8 +36,8 @@ public class Patientallergies implements Serializable {
     @Column(name = "verified")
     private Boolean verified;
 
-    @Column(name = "verifiedby")
-    private Integer verifiedby;
+    @Column(name = "verifiedBy")
+    private Integer verifiedBy;
 
     @Column(name = "verifiedDate")
     private Date verifiedDate;

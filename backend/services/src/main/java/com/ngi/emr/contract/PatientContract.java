@@ -15,6 +15,9 @@ import java.util.Date;
 @Getter @Setter
 public class PatientContract {
 
+    @JsonProperty("id")
+    private Integer id;
+
     @JsonProperty("firstname")
     private String firstname;
 

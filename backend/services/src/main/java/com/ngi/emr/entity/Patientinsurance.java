@@ -18,8 +18,8 @@ public class Patientinsurance implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "primaryInsurceProvider")
-    private String primaryInsurceProvider;
+    @Column(name = "primaryInsuranceProvider")
+    private String primaryInsuranceProvider;
 
     @Column(name = "primaryPolicyTypeId")
     private Integer primaryPolicyTypeId;
@@ -45,8 +45,8 @@ public class Patientinsurance implements Serializable {
     @Column(name = "hasSecondary")
     private Boolean hasSecondary;
 
-    @Column(name = "secInsurceProvider")
-    private String secInsurceProvider;
+    @Column(name = "secInsuranceProvider")
+    private String secInsuranceProvider;
 
     @Column(name = "secPolicyTypeId")
     private Integer secPolicyTypeId;
