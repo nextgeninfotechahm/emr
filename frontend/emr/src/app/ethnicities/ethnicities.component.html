@@ -1,0 +1,9 @@
+
+<div class="ui container header center aligned">All Ethnicities</div>
+<div class="ui container three column grid">
+<div class="ui row" *ngFor="let ethnicity of ethnicities">
+    <div class="column">{{ethnicity.id}}</div>
+    <div class="column">{{ethnicity.name}}</div>
+    <div class="column">{{ethnicity.description}}</div>
+</div>
+</div>

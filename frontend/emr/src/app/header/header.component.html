@@ -1,0 +1,28 @@
+<div class="ui grey inverted menu pointing left">
+    <div class="ui item">
+        <a [routerLink]="['/home']" class="item">Home</a>
+        <a [routerLink]="['/patients']" class="item">Patients</a>
+        <a [routerLink]="['/visit']" class="item">Visits</a>
+        <a [routerLink]="['/pharmacy']" class="item">Pharmacy</a>
+        <a [routerLink]="['/imaging']" class="item">Imaging</a>
+        <a [routerLink]="['/lab']" class="item">Lab</a>
+    </div>
+    <!--<div>
+        <img class="ui image fluid" src="assets/NextGen EMR.png" />
+    </div>-->
+    <div class="ui simple dropdown item right">
+        Admin
+        <i class="dropdown icon"></i>
+        <div class="ui menu">
+            <a class="item" [routerLink]="['/ethnicities']">Ethnicities</a>
+            <a class="item" [routerLink]="['/facility']">Facility</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="ui primary button" [routerLink]="['/login']">Login</div>
+    </div>
+    <a [routerLink]="['/logout']" class="item">Logout</a>
+</div>
+
+    
+   
