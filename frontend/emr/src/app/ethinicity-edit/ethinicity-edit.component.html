@@ -1,0 +1,19 @@
+<div class="ui container form">
+    <form class="ui container form" 
+        #f="ngForm" (ngSubmit)="save(f.value)">
+        <div class="field">
+            <label for="id">ID</label>
+            <input class="disabled" name="id" id="id" ngModel>
+        </div>
+        <div class="field">
+            <label for="name">Name</label>
+            <input name="name" id="name" ngModel>
+        </div>
+        <div class="field">
+            <label for="description">Description</label>
+            <input name="description" id="description" ngModel>
+        </div>
+        <button class="ui button blue" type="submit">Submit</button>
+    </form>
+
+</div>

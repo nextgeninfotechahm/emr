@@ -1,0 +1,21 @@
+<div class="ui container" *ngIf="!authService.getUser();">
+<form class="ui form" *ngIf="!authService.getUser();">
+    <div class="field">
+        <label class="label" for="username">User:</label>
+        <input  name="username" #username>
+    </div>
+    <div class="field">
+        <label class="label" for="password">Password:</label>
+        <input name="password" type="password" #password>
+    </div>
+    <a class="ui button green" (click)="login(username.value,password.value)">Login</a>
+
+</form>
+</div>
+<div class="ui positive message header" *ngIf="authService.getUser()">
+    Logged in as <b>{{authService.getUser()}}</b>
+    <p></p><a class="ui button red" href="" (click)="logout();">Logout</a>
+</div>
+<div class="ui negative message" *ngIf="message">
+    {{message}}
+</div>
