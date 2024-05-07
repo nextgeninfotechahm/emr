@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Ethnicity } from "../models/ethnicity";
 import { map } from "rxjs";
 import { Observable } from "rxjs";
@@ -34,9 +34,15 @@ export class EthnicityService {
             })
         }
     }
-    getEthnicities():Observable<Ethnicity[]>{
+    
+    getEthnicities(query?:string):Observable<Ethnicity[]>{
+       let qparams;
+       if(query){
+            qparams=new HttpParams().append("text",query);
+        }
+        console.log("Query parameters",qparams);
         return this.http
-        .get(this.SERVICE_URL)
+        .get(this.SERVICE_URL,{params:qparams})
         .pipe(
             map(response=>{
                 var items:Array<any>=(<any>response);
@@ -53,12 +59,43 @@ export class EthnicityService {
         );
     }
 
-    removeEthnicity(ethnicity:Ethnicity){
+    removeEthnicity(ethnicity:Ethnicity):Observable<Object>{
         if(ethnicity.id>0){
-            this.http.delete(this.SERVICE_URL+"/"+ethnicity.id)
-            .subscribe(response=>{
-                console.log("Delete response is:",response);
-            })
+            return this.http.delete(this.SERVICE_URL+"/"+ethnicity.id);
+        }
+        else{
+            return new Observable<{Error:"Id is not valid"}>();
         }
     }
+
+    getCount():number{
+        let result=0;
+        this.http.get(this.SERVICE_URL+"/count").subscribe(
+            response=>{
+                result=(<any>response);
+            }
+        );
+        return result;
+    }
+
+    searchEthnicities(query:string):Observable<Ethnicity[]>{
+        let qparams=new HttpParams();
+        qparams.append("text",query);
+        return this.http
+        .get(this.SERVICE_URL,{params:qparams})
+        .pipe(
+            map(response=>{
+                var items:Array<any>=(<any>response);
+                return items.map(
+                    item=>{
+                        return new Ethnicity(
+                            item.id,
+                            item.name,
+                            item.description
+                        );
+                     })
+                }
+            )
+        );
+       }
 }

@@ -1,10 +1,10 @@
 <div class="ui header center aligned">Add / Edit Ethnicity</div>
-<div class="ui container form">
+<div class="ui raised segment">
     <form class="ui container form" 
         #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="field">
-            <label for="id">ID</label>
-            <input class="disabled" name="id" id="id" [(ngModel)]="curEthinicity.id">
+            <label for="id">ID <a href="" (click)="resetCurrent()" *ngIf="curEthinicity.id>0" class="ui link red active">Add new</a></label>
+            <input class="ui disabled" disabled name="id" id="id" [(ngModel)]="curEthinicity.id">
         </div>
         <div class="field">
             <label for="name">Name</label>
@@ -14,23 +14,26 @@
             <label for="description">Description</label>
             <input name="description" id="description" [(ngModel)]="curEthinicity.description">
         </div>
-        <button class="ui button blue" type="submit">Submit</button>
-        <button class="ui button blue" (click)="delete();">Delete</button>
+        <button class="ui button blue" type="submit">
+            <span *ngIf="curEthinicity.id>0">Edit</span>
+            <span *ngIf="curEthinicity.id<=0">Add</span>
+        </button>
+        <button class="ui button blue" (click)="delete();" *ngIf="curEthinicity.id>0">Delete</button>
     </form>
 </div>
-
-<div class="ui divider"></div>
-<div class="ui container">
-    <p>
-        <input type="text" #newquery [value]="query" (keydown.enter)="search(newquery.value)">
-        <button (click)="search(newquery.value)">Search</button>
-    </p>
+<div class="ui raised segment">
+    <form class="ui container form">
+        <div class="inline fields">
+            <input type="text" #newquery [value]="query" (keydown.enter)="search(newquery.value)" class="in-line">
+            <button (click)="search(newquery.value)" class="ui button red inline">Search</button>
+        </div>
+    </form>
 </div>
-<div class="ui divider"></div>
 <div class="ui container header center aligned">All Ethnicities</div>
 <div class="ui container three column grid">
-    <div class="ui row" *ngFor="let ethnicity of ethnicities"
+    <div class="ui row active" *ngFor="let ethnicity of ethnicities"
         (click)="selectEthnicity(ethnicity);"
+        
         >
         <div class="column">{{ethnicity.id}}</div>
         <div class="column">{{ethnicity.name}}</div>

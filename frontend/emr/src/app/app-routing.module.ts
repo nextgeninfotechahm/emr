@@ -10,7 +10,7 @@ const routes: Routes = [
   {path:'home',component:EthnicitiesComponent},
   {path:'login',component:LoginComponent},
   {path:'logout',component:LoginComponent},
-  {path:'patients',component:LoginComponent, children:patientRoutes},
+ // {path:'patients',component:LoginComponent, children:patientRoutes},
 
 ];
 
