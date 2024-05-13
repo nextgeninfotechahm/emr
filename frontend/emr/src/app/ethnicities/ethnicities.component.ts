@@ -18,6 +18,8 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
   allLoaded:boolean=false;
   totalCount:number=0;
   rowsPerPAge=20;
+  curPage:number=0;
+  totalPages:number=1;
 
   constructor(private service:EthnicityService,
         private router:Router,
@@ -34,6 +36,7 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
 
     
   }
+
   ngOnInit(): void {
     this.totalCount=this.service.getCount();
     if (this.totalCount<this.rowsPerPAge)
@@ -52,7 +55,13 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
   refreshList():void{
     this.totalCount=this.service.getCount();
     this.service.getEthnicities().subscribe( data=>{
-      this.ethnicities=data;
+      //this.ethnicities=data;
+      console.log(data);
+      this.totalPages=data[0];
+      this.curPage=data[1];
+      this.ethnicities=data[2];
+//        this.filtered=false;
+
     });
   }
 
@@ -63,8 +72,13 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
   
   save(data:any):void{
     console.log("Saving data:",data);
-    this.service.saveEthnicity(this.curEthinicity);
-    this.refreshList();
+    this.service.saveEthnicity(this.curEthinicity).subscribe(response=>{
+      console.log("Save Response",response);
+      this.refreshList();
+    
+    });
+    this.resetCurrent();
+    
   }
 
   delete():boolean{
@@ -74,23 +88,29 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
         this.refreshList();
       }
     );
-    this.curEthinicity=new Ethnicity(0,"","");
-    return false;
+    //this.curEthinicity=new Ethnicity(0,"","");
+    return this.resetCurrent();
+    //return false;
   }
 
   private getAllEthnicities():void{
+    console.log("Calling Ethnicities service");
     this.service.getEthnicities().subscribe(data=>{
       console.log(data);
-      this.ethnicities=data;
-      this.filtered=false;
+      this.totalPages=data[0];
+      this.curPage=data[1];
+        this.filtered=false;
     });
+
   }
 
   private filterEthnicities(query:string){
     console.log("Calling Ethnicities service");
-      this.service.getEthnicities(query).subscribe(data=>{
+      this.service.getEthnicities(query,this.curPage+1).subscribe(data=>{
         console.log(data);
-        this.ethnicities=data;
+        this.totalPages=data[0];
+        this.curPage=data[1];
+        this.ethnicities=data[2];
       });
       this.filtered=true;
   }
@@ -104,7 +124,23 @@ export class EthnicitiesComponent implements OnInit, OnChanges {
     }else{
       this.filterEthnicities(query);
     }
+    this.query=query;
+  }
+
+  fetchNextPage():boolean{
+    //this.filterEthnicities();
+    this.curPage+=1;
+    return false;
+
   }
   
+getNumbers():Array<number>{
+  let nums=[];
+  for(let i=1;i<=this.totalPages;i++){
+    nums.push(i);
+  }
+  return nums;
+  
+}
 
 }

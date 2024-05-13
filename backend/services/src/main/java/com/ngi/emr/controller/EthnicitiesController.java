@@ -1,22 +1,37 @@
 package com.ngi.emr.controller;
 
+import com.ngi.emr.AppConfig;
 import com.ngi.emr.contract.EthnicityContract;
+import com.ngi.emr.contract.QueryResultsContract;
+
 import com.ngi.emr.service.EthnicityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/ethnicities")
 public class EthnicitiesController {
     @Autowired
     private EthnicityService service;
+    @Autowired
+    private AppConfig appConfig;
  
     @RequestMapping(method=RequestMethod.GET)
-    public List<EthnicityContract> getAllEthnicities(@RequestParam(required = false,value = "text") String query){
-    
-        return service.getEthnicities(query);
+    public QueryResultsContract<EthnicityContract> getEthnicities(
+        @RequestParam(required = false,value = "text") String query,
+        @RequestParam(required = false,value = "paged",defaultValue = "false") boolean paged,
+        @RequestParam(required = false,value = "pageno", defaultValue = "0") int pageNo,
+        @RequestParam(required = false,value = "sortby", defaultValue = "ID") String sortColumn,
+        @RequestParam(required = false,value = "sortOrder", defaultValue = "0") int sortOrder){
+        QueryResultsContract<EthnicityContract> resp=new QueryResultsContract<>();
+        int totalPages=1;
+        if(appConfig.isPaged())
+            totalPages=(int)  Math.ceil((double)service.getCount()/appConfig.getPageSize());
+        resp.setTotalPages(totalPages);
+        resp.setPageNo(appConfig.isPaged()?pageNo:0);
+        resp.setResults(service.getEthnicities(query, paged, pageNo, sortColumn, sortOrder));
+        return resp;
     }
 
     @RequestMapping(method=RequestMethod.POST)
