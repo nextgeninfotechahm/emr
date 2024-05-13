@@ -12,10 +12,11 @@ import java.util.List;
 public class EthnicitiesController {
     @Autowired
     private EthnicityService service;
+ 
     @RequestMapping(method=RequestMethod.GET)
-    public List<EthnicityContract> getAllEthnicities(){
-
-        return service.getEthnicities();
+    public List<EthnicityContract> getAllEthnicities(@RequestParam(required = false,value = "text") String query){
+    
+        return service.getEthnicities(query);
     }
 
     @RequestMapping(method=RequestMethod.POST)
@@ -31,6 +32,11 @@ public class EthnicitiesController {
     @RequestMapping(method=RequestMethod.PUT,value="/{id}")
     public void updateEthnicity(@PathVariable("id") int id,@RequestBody EthnicityContract ethnicity){
         service.updateEthnicity(id,ethnicity);
+    }
+
+    @RequestMapping(method=RequestMethod.GET,value="/count")
+    public long getCount(){
+        return service.getCount();
     }
 
 }

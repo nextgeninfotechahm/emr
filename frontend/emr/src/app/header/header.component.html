@@ -18,10 +18,10 @@
             <a class="item" [routerLink]="['/facility']">Facility</a>
         </div>
     </div>
-    <div class="item">
+    <div class="item" *ngIf="!authService.getUser();">
         <div class="ui primary button" [routerLink]="['/login']">Login</div>
     </div>
-    <a [routerLink]="['/logout']" class="item">Logout</a>
+    <a class="item" *ngIf="authService.getUser();" [routerLink]="['/logout']">Logout</a>
 </div>
 
     

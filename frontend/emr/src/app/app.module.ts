@@ -12,10 +12,14 @@ import { FacilityManagementComponent } from './facility-management/facility-mana
 import { RouterModule,Routes } from '@angular/router';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { EthnicityService } from './services/ethnicity.service';
-const routes: Routes = [
-  {path:'ethnicities',component:EthnicitiesComponent},
-  {path:'home',component:EthnicitiesComponent}
-];
+import { EthinicityComponent } from './ethinicity/ethinicity.component';
+import { EthinicityEditComponent } from './ethinicity-edit/ethinicity-edit.component';
+import { FormsModule, FormControl } from '@angular/forms';
+import { EthnicitySearchComponent } from './ethnicity-search/ethnicity-search.component';
+import { AuthService } from './services/auth.service';
+import { LoginComponent } from './login/login.component';
+import { LoggedInGuard } from './logged-in.guard';
+LoggedInGuard
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,20 +27,23 @@ const routes: Routes = [
     HeaderComponent,
     FooterComponent,
     AdminComponent,
-    FacilityManagementComponent
+    FacilityManagementComponent,
+    EthinicityComponent,
+    EthinicityEditComponent,
+    EthnicitySearchComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    
-    RouterModule.forRoot(routes)
-
+    FormsModule,
   ],
   providers: [
-    {provide:'API_URL',useValue:'localhost:8085/ethnicities'},
+    {provide:'API_URL',useValue:'http://localhost:8085/'},
     {provide:LocationStrategy,useClass:HashLocationStrategy},
-    EthnicityService
+    EthnicityService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
