@@ -1,6 +1,5 @@
 package com.ngi.emr.controller;
 
-import com.ngi.emr.contract.PatientdocsContract;
 import com.ngi.emr.contract.PatientnotesContract;
 import com.ngi.emr.service.PatientNotesService;
 import org.springframework.beans.factory.annotation.Autowired;

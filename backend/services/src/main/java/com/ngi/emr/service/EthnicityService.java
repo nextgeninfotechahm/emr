@@ -2,6 +2,7 @@ package com.ngi.emr.service;
 
 import com.ngi.emr.AppConfig;
 import com.ngi.emr.contract.EthnicityContract;
+import com.ngi.emr.contract.QueryResultsContract;
 import com.ngi.emr.entity.Ethnicities;
 import com.ngi.emr.repo.EthnicitiesRepo;
 
@@ -50,7 +51,7 @@ public class EthnicityService {
         }
     }
 
-    public List<EthnicityContract> getEthnicities(String query,boolean paged, int pageNo, String sortColumn, int sortOrder){
+    public QueryResultsContract<EthnicityContract>  getEthnicities(String query,boolean paged, int pageNo, String sortColumn, int sortOrder){
         List<EthnicityContract> ethinicities=new ArrayList<>();
         List<Ethnicities> result;
 
@@ -71,15 +72,22 @@ public class EthnicityService {
                     return null;
                 }
         };
+        int totalPages=1;
         if(appConfig.isPaged()){
+            totalPages=(int)  Math.ceil((double)repo.count(spec)/appConfig.getPageSize());
             result=repo.findAll(spec,PageRequest.of(pageNo,appConfig.getPageSize())).toList();
         }else{
             result=repo.findAll(spec);
         }
+
         for(Ethnicities e:result){
             ethinicities.add(new EthnicityContract(e.getId(),e.getName(),e.getDescription()));
         }
-        return ethinicities;
+        QueryResultsContract<EthnicityContract> resp=new QueryResultsContract<>();
+        resp.setTotalPages(totalPages);
+        resp.setPageNo(pageNo);
+        resp.setResults(ethinicities);
+        return resp;
     }
     
     public long getCount(){

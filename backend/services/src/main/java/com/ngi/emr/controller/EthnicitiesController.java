@@ -24,14 +24,7 @@ public class EthnicitiesController {
         @RequestParam(required = false,value = "pageno", defaultValue = "0") int pageNo,
         @RequestParam(required = false,value = "sortby", defaultValue = "ID") String sortColumn,
         @RequestParam(required = false,value = "sortOrder", defaultValue = "0") int sortOrder){
-        QueryResultsContract<EthnicityContract> resp=new QueryResultsContract<>();
-        int totalPages=1;
-        if(appConfig.isPaged())
-            totalPages=(int)  Math.ceil((double)service.getCount()/appConfig.getPageSize());
-        resp.setTotalPages(totalPages);
-        resp.setPageNo(appConfig.isPaged()?pageNo:0);
-        resp.setResults(service.getEthnicities(query, paged, pageNo, sortColumn, sortOrder));
-        return resp;
+        return service.getEthnicities(query, paged, pageNo, sortColumn, sortOrder);
     }
 
     @RequestMapping(method=RequestMethod.POST)
