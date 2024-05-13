@@ -41,7 +41,7 @@ public class PatientInsuranceService {
         Optional<Patientinsurance> pi = repo.findById(patientInsuranceId);
         if(!pi.isEmpty())
         {
-            repo.deleteById(patientInsuranceId);
+            repo.delete(pi.get());
         }
     }
 

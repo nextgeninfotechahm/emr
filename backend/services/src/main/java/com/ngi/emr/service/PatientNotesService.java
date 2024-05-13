@@ -30,7 +30,7 @@ public class PatientNotesService {
         Optional<Patientnotes> pnotes = repo.findById(patientNotesId);
         if(!pnotes.isEmpty())
         {
-            repo.deleteById(patientNotesId);
+            repo.delete(pnotes.get());
         }
     }
 

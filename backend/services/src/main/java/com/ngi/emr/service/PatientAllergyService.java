@@ -34,7 +34,7 @@ public class PatientAllergyService {
         Optional<Patientallergies> pa = repo.findById(patientAllergyId);
         if(!pa.isEmpty())
         {
-            repo.deleteById(patientAllergyId);
+            repo.delete(pa.get());
         }
     }
 
