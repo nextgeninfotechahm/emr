@@ -34,6 +34,7 @@ CREATE TABLE `allergies` (
   `status` tinyint(1) DEFAULT NULL,
   `ICDCode` varchar(50) DEFAULT NULL,
   `snowmedRef` varchar(50) DEFAULT NULL,
+  'allergen' varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -219,6 +220,7 @@ DROP TABLE IF EXISTS `patient`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `patient` (
   `id` int NOT NULL AUTO_INCREMENT,
+  'mrn' varchar(15) not null,
   `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `middleinitial` char(1) DEFAULT NULL,
@@ -269,6 +271,10 @@ CREATE TABLE `patientallergies` (
   `id` int NOT NULL AUTO_INCREMENT,
   `patientId` int DEFAULT NULL,
   `allergyId` int DEFAULT NULL,
+  'allergen' varchar(50) DEFAULT NULL,
+  'reaction' varchar(50) DEFAULT NULL,
+  'reactiontype' varchar(50) DEFAULT NULL,
+  'severity' varchar(50) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
@@ -302,7 +308,10 @@ CREATE TABLE `patientdocs` (
   `patientId` int DEFAULT NULL,
   `docType` varchar(100) DEFAULT NULL,
   `docPath` varchar(256) DEFAULT NULL,
+  'name' varchar(50) DEFAULT NULL,
   `comments` varchar(1000) DEFAULT NULL,
+  'refDate' date DEFAULT NULL,
+  'uploadDate' date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `patientId` (`patientId`),
   CONSTRAINT `patientdocs_ibfk_1` FOREIGN KEY (`patientId`) REFERENCES `patient` (`id`)
@@ -329,6 +338,7 @@ CREATE TABLE `patienthealthcondition` (
   `id` int NOT NULL AUTO_INCREMENT,
   `patientId` int DEFAULT NULL,
   `conditionId` int DEFAULT NULL,
+  'condition' varchar(50) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `startDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
@@ -417,8 +427,197 @@ LOCK TABLES `patientnotes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `patientschedule`
+--
+
+DROP TABLE IF EXISTS `patientschedule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientschedule` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `patientId` int DEFAULT NULL,
+  'scheduleDateTime' datetime DEFAULT NULL,
+  'staffId' int DEFAULT NULL,
+  `note` varchar(256) DEFAULT NULL,
+  `modifiedDate` date DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patientId` (`patientId`),
+  CONSTRAINT `patientschedule_ibfk_1` FOREIGN KEY (`patientId`) REFERENCES `patient` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientschedule` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `patientvisit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientvisit` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `patientId` int DEFAULT NULL,
+  'scheduleId' int DEFAULT NULL,
+  'visitDateTime' datetime DEFAULT NULL,
+  'staffId' int DEFAULT NULL,
+  `note` varchar(256) DEFAULT NULL,
+  `modifiedDate` date DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patientId` (`patientId`),
+  CONSTRAINT `patientvisit_ibfk_1` FOREIGN KEY (`patientId`) REFERENCES `patient` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientvisit` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `patientvisitissues`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientvisitissues` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  'visitId' int DEFAULT NULL,
+  'healthIssueId' int DEFAULT NULL,
+  'healthIssueText' varchar(100) DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `patientvisitissues_ibfk_1` FOREIGN KEY (`visitId`) REFERENCES `patientvisit` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientvisitissues` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+DROP TABLE IF EXISTS `patientvisitreason`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientvisitreason` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  'visitId' int DEFAULT NULL,
+  'reasonId' int DEFAULT NULL,
+  'reasonText' varchar(50) DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `patientvisitreason_ibfk_1` FOREIGN KEY (`visitId`) REFERENCES `patientvisit` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientvisitreason` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `patientvisitsummary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientvisitsummary` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  'visitId' int DEFAULT NULL,
+  'summaryType' int DEFAULT NULL,
+  'summaryText' varchar(2000) DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `patientvisitsummary_ibfk_1` FOREIGN KEY (`visitId`) REFERENCES `patientvisit` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientvisitsummary` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `patientvisitvital`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientvisit` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  'visitId' int DEFAULT NULL,
+  'vitalId' int DEFAULT NULL,
+  'vitalValue' numeric(10,2) DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patientId` (`patientId`),
+  CONSTRAINT `patientvisitvital_ibfk_1` FOREIGN KEY (`visitId`) REFERENCES `patientvisit` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientvisitvital` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patientxid`
+--
+
+DROP TABLE IF EXISTS `patientxid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientxid` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `patientId` int DEFAULT NULL,
+  'facilityId' int DEFAULT NULL,
+  'sourceName' varchar(50) DEFAULT NULL,
+  'idType' varchar(15) DEFAULt NULL,
+  'idAtSource' varchar(50) DEFAULT NULL,
+  `note` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patientId` (`patientId`),
+  CONSTRAINT `patientnotes_ibfk_1` FOREIGN KEY (`patientId`) REFERENCES `patient` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientnotes` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
 -- Table structure for table `permissions`
 --
+
+
+
+
 
 DROP TABLE IF EXISTS `permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -618,3 +817,19 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-04-13 11:22:03
+
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `docTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `docTypes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
