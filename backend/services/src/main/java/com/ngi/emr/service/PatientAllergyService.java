@@ -1,9 +1,7 @@
 package com.ngi.emr.service;
 
 import com.ngi.emr.contract.PatientAllergyContract;
-import com.ngi.emr.contract.PatienthealthconditionContract;
 import com.ngi.emr.entity.Patientallergies;
-import com.ngi.emr.entity.Patienthealthcondition;
 import com.ngi.emr.repo.PatientallergiesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,7 @@ public class PatientAllergyService {
         Optional<Patientallergies> pa = repo.findById(patientAllergyId);
         if(!pa.isEmpty())
         {
-            repo.deleteById(patientAllergyId);
+            repo.delete(pa.get());
         }
     }
 

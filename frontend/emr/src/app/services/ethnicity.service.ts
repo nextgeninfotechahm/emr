@@ -13,47 +13,51 @@ export class EthnicityService {
     }
 
    
-    saveEthnicity(ethnicity:Ethnicity){
+    saveEthnicity(ethnicity:Ethnicity):Observable<Object>{
         if(ethnicity.id==0){
-            this.http
+          return  this.http
             .post(this.SERVICE_URL,{
                 name:ethnicity.name,
                 description:ethnicity.description
-            }).subscribe(response=>{
-                console.log("Post response is:",response);
             });
         }
         else{
-            this.http
+           return this.http
             .put(this.SERVICE_URL+'/'+ethnicity.id,{
                 id:ethnicity.id,
                 name:ethnicity.name,
                 description:ethnicity.description
-            }).subscribe(response=>{
-                console.log("Put response is:",response);
-            })
+            });
         }
     }
     
-    getEthnicities(query?:string):Observable<Ethnicity[]>{
-       let qparams;
+    getEthnicities(query?:string,pageNo?:number):Observable<any>{
+       let qparams=new HttpParams();
        if(query){
-            qparams=new HttpParams().append("text",query);
+            qparams=qparams.append("text",query);
+        }
+        if(pageNo){
+            qparams=qparams.append("pageno",pageNo);
         }
         console.log("Query parameters",qparams);
         return this.http
         .get(this.SERVICE_URL,{params:qparams})
         .pipe(
             map(response=>{
-                var items:Array<any>=(<any>response);
-                return items.map(
+                console.log("REsponse",response);
+                var resp:any=<any>response;
+                var items:Array<any>=resp["results"];
+                var totalPages:number=resp["totalPages"];
+                var pageNo:number=resp["pageNo"];
+                var results=items.map(
                     item=>{
                         return new Ethnicity(
                             item.id,
                             item.name,
                             item.description
                         );
-                     })
+                     });
+                return [totalPages,pageNo,results];
                 }
             )
         );
@@ -77,25 +81,5 @@ export class EthnicityService {
         );
         return result;
     }
-
-    searchEthnicities(query:string):Observable<Ethnicity[]>{
-        let qparams=new HttpParams();
-        qparams.append("text",query);
-        return this.http
-        .get(this.SERVICE_URL,{params:qparams})
-        .pipe(
-            map(response=>{
-                var items:Array<any>=(<any>response);
-                return items.map(
-                    item=>{
-                        return new Ethnicity(
-                            item.id,
-                            item.name,
-                            item.description
-                        );
-                     })
-                }
-            )
-        );
-       }
+ 
 }

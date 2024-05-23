@@ -32,11 +32,16 @@
 <div class="ui container header center aligned">All Ethnicities</div>
 <div class="ui container three column grid">
     <div class="ui row active" *ngFor="let ethnicity of ethnicities"
-        (click)="selectEthnicity(ethnicity);"
-        
-        >
+        (click)="selectEthnicity(ethnicity);">
         <div class="column">{{ethnicity.id}}</div>
         <div class="column">{{ethnicity.name}}</div>
         <div class="column">{{ethnicity.description}}</div>
     </div>
+</div>
+<div class="ui divider"></div>
+<div class="ui container center aligned in-line" *ngIf="totalPages>1">
+    <span class="ui item in-line" *ngFor="let num of getNumbers()">
+        <a href="" class="ui link" *ngIf="num!=curPage" (click)="fetchPage(num)">{{num}}</a>
+        <span *ngIf="num==curPage">{{num}}</span>
+    </span>
 </div>

@@ -27,7 +27,7 @@ public class PatientDocsService {
         Optional<Patientdocs> pdocs = repo.findById(patientDocId);
         if(!pdocs.isEmpty())
         {
-            repo.deleteById(patientDocId);
+            repo.delete(pdocs.get());
         }
     }
 

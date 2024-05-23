@@ -1,7 +1,6 @@
 package com.ngi.emr.controller;
 
 import com.ngi.emr.contract.PatientAllergyContract;
-import com.ngi.emr.contract.PatienthealthconditionContract;
 import com.ngi.emr.service.PatientAllergyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

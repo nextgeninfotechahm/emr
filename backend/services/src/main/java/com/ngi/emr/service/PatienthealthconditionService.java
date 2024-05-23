@@ -33,7 +33,7 @@ public class PatienthealthconditionService {
         Optional<Patienthealthcondition> phc = repo.findById(patienthealthconditionId);
         if(!phc.isEmpty())
         {
-            repo.deleteById(patienthealthconditionId);
+            repo.delete(phc.get());
         }
     }
 

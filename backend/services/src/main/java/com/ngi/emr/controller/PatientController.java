@@ -13,7 +13,7 @@ import java.util.List;
 public class PatientController {
     @Autowired
     private PatientService patientService;
-    @RequestMapping(method= RequestMethod.GET)
+    @GetMapping
     public List<PatientContract> getAllPatients()
     {
         return patientService.getPatients();
@@ -35,5 +35,11 @@ public class PatientController {
     public void updatePatient(@PathVariable("id") int id, @RequestBody PatientContract patient)
     {
         patientService.updatePatient(id,patient);
+    }
+
+    @GetMapping("/find")
+    public PatientContract findByName(@RequestParam String firstName, @RequestParam String lastName)
+    {
+        return patientService.findByName(firstName,lastName);
     }
 }
