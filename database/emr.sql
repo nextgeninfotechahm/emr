@@ -426,6 +426,46 @@ LOCK TABLES `patientnotes` WRITE;
 /*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `patientorder`
+--
+
+DROP TABLE IF EXISTS `patientorder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patientorder` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `patientId` int DEFAULT NULL,
+  'visitId' int DEFAULT NULL,
+  'orderType' int DEFAULT NULL,
+  'orderCode' int DEFAULT NULL,
+  'orderDesc' varchar(256) DEFAULT NULL,
+  'orderDateTime' datetime DEFAULT NULL,
+  'staffId' int DEFAULT NULL,
+  'reasonId' int DEFAULT NULL,
+  'dxCode' varchar(15) DEFAULT NULL,
+  `note` varchar(256) DEFAULT NULL,
+  'priorityId' int DEFAULT NULL,
+  'requestTimeLine' varchar(100) DEFAULT NULL, 
+  `modifiedDate` date DEFAULT NULL,
+  `addedBy` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patientId` (`patientId`),
+  CONSTRAINT `patientorder_ibfk_1` FOREIGN KEY (`patientId`) REFERENCES `patient` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patientnotes`
+--
+
+LOCK TABLES `patientorder` WRITE;
+/*!40000 ALTER TABLE `patientnotes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patientnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 --
 -- Table structure for table `patientschedule`
 --
